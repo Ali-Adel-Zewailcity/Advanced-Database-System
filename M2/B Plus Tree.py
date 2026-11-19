@@ -118,3 +118,19 @@ class BPlusTree:
             parent = leaf.parent
 
             self.insert_into_parent(parent, separator, new_leaf)
+
+    def insert_into_parent(self, parent, key, new_child):
+
+        insert_index = 0
+
+        while insert_index < len(parent.keys) and key > parent.keys[insert_index]:
+            insert_index += 1
+
+        parent.keys.insert(insert_index, key)
+
+        parent.children.insert(insert_index + 1, new_child)
+
+        new_child.parent = parent
+
+        if len(parent.keys) > self.order:
+            self.split_internal(parent)
