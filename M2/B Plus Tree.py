@@ -169,3 +169,19 @@ class BPlusTree:
             parent = node.parent
 
             self.insert_into_parent(parent, promoted_key, new_internal)
+
+
+    def display(self, node=None, level=0):
+
+        if node is None:
+            node = self.root
+
+        indent = "    " * level
+
+        node_type = "Leaf" if node.leaf else "Internal"
+
+        print(f"{indent}{node_type} Node: {node.keys}")
+
+        if not node.leaf:
+            for child in node.children:
+                self.display(child, level + 1)
