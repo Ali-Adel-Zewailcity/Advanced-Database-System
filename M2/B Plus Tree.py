@@ -185,3 +185,21 @@ class BPlusTree:
         if not node.leaf:
             for child in node.children:
                 self.display(child, level + 1)
+
+
+    def display_leaves(self):
+
+        print("\nLeaf Chain:")
+
+        current = self.root
+
+        while not current.leaf:
+            current = current.children[0]
+
+        while current:
+
+            print(current.keys, end=" -> ")
+
+            current = current.next
+
+        print("None")
