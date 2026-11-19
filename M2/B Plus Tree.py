@@ -134,3 +134,38 @@ class BPlusTree:
 
         if len(parent.keys) > self.order:
             self.split_internal(parent)
+
+    def split_internal(self, node):
+
+        new_internal = BPlusTreeNode(leaf=False)
+
+        mid = len(node.keys) // 2
+
+        promoted_key = node.keys[mid]
+
+        new_internal.keys = node.keys[mid + 1:]
+        node.keys = node.keys[:mid]
+
+        new_internal.children = node.children[mid + 1:]
+        node.children = node.children[:mid + 1]
+
+        for child in new_internal.children:
+            child.parent = new_internal
+
+        if node == self.root:
+
+            new_root = BPlusTreeNode(leaf=False)
+
+            new_root.keys = [promoted_key]
+            new_root.children = [node, new_internal]
+
+            node.parent = new_root
+            new_internal.parent = new_root
+
+            self.root = new_root
+
+        else:
+
+            parent = node.parent
+
+            self.insert_into_parent(parent, promoted_key, new_internal)
