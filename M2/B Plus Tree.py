@@ -60,7 +60,7 @@ class BPlusTree:
             current = current.next
 
         return result
-        
+
     def insert_simple(self, key):
 
 
@@ -71,3 +71,17 @@ class BPlusTree:
 
 
         leaf.keys.sort()
+    
+    def insert(self, key):
+
+        if self.search(key):
+            print(f"Key {key} already exists.")
+            return
+
+        leaf = self.find_leaf(key)
+
+        leaf.keys.append(key)
+        leaf.keys.sort()
+
+        if len(leaf.keys) > self.order:
+            self.split_leaf(leaf)
