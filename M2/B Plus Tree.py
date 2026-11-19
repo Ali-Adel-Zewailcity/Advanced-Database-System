@@ -60,3 +60,14 @@ class BPlusTree:
             current = current.next
 
         return result
+        
+    def insert_simple(self, key):
+
+
+        leaf = self.find_leaf(key)
+
+
+        leaf.keys.append(key)
+
+
+        leaf.keys.sort()
