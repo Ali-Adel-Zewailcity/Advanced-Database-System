@@ -40,3 +40,23 @@ class BPlusTree:
             return True
 
         return False
+
+    def range_scan(self, start, end):
+
+        result = []
+
+        current = self.find_leaf(start)
+
+        while current:
+
+            for key in current.keys:
+
+                if start <= key <= end:
+                    result.append(key)
+
+                elif key > end:
+                    return result
+
+            current = current.next
+
+        return result
