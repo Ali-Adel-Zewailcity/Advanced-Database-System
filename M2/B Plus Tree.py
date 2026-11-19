@@ -31,3 +31,12 @@ class BPlusTree:
             current = current.children[i]
 
         return current
+
+    def search(self, key):
+
+        leaf = self.find_leaf(key)
+
+        if key in leaf.keys:
+            return True
+
+        return False
