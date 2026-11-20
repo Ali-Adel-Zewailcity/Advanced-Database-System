@@ -46,7 +46,7 @@ class BPlusTree:
         return False
 
     def range_scan(self, start, end):
-        
+
         if start > end:
             return []
 
@@ -83,7 +83,7 @@ class BPlusTree:
 
         if self.search(key):
             print(f"Key {key} already exists.")
-            return
+            return False
 
         leaf = self.find_leaf(key)
 
@@ -92,6 +92,9 @@ class BPlusTree:
 
         if len(leaf.keys) > self.order:
             self.split_leaf(leaf)
+
+        print(f"Key {key} inserted successfully.")
+        return True
     
     def split_leaf(self, leaf):
 
