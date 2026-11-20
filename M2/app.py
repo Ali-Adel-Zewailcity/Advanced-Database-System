@@ -202,18 +202,31 @@ if st.button("Insert Keys"):
             map(int, insert_input.split())
         )
 
+        inserted = []
+        duplicates = []
+
         for value in values:
-            btree.insert(value)
 
-        st.success(
-            f"Inserted keys: {values}"
-        )
+            if btree.insert(value):
+                inserted.append(value)
+            else:
+                duplicates.append(value)
 
-    except:
+        if inserted:
+            st.success(f"Inserted keys: {inserted}")
+
+        if duplicates:
+            st.warning(f"Already existed: {duplicates}")
+
+        if not inserted and not duplicates:
+            st.info("No keys entered.")
+
+    except ValueError:
 
         st.error(
             "Please enter valid integers separated by spaces."
         )
+
 
 
 st.header("Search")
