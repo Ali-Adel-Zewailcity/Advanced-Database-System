@@ -15,6 +15,10 @@ class BPlusTreeNode:
 
 class BPlusTree:
     def __init__(self, order=3):
+
+        if order < 2:
+            raise ValueError("Order must be at least 2")
+        
         self.order = order
         self.root = BPlusTreeNode(leaf=True)
     
