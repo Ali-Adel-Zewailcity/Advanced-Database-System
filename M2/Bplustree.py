@@ -46,6 +46,9 @@ class BPlusTree:
         return False
 
     def range_scan(self, start, end):
+        
+        if start > end:
+            return []
 
         result = []
 
