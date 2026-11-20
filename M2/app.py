@@ -2,7 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from bplustree import BPlusTree
+from Bplustree import BPlusTree
 
 
 class BPlusTreeVisualizer:
