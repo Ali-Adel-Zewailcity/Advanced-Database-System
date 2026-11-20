@@ -10,3 +10,7 @@ class PageType(IntEnum):
     CATALOG = 2
     COLUMN_DATA_FIXED = 3
     COLUMN_DATA_VAR = 4
+    BTREE_INTERNAL = 5
+    BTREE_LEAF = 6
+    BTREE_META = 7
+
