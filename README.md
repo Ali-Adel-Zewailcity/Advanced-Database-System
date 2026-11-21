@@ -108,6 +108,13 @@ with Database("shop.db", cfg) as db:
     print(db.stats())                                            # hits, misses, page I/O
 ```
 
+To run a complete M1/M2 demonstration, including object encryption:
+
+```powershell
+$env:PYTHONPATH="engine/src"
+py -3 system_demo.py
+```
+
 To understand the code, read it bottom-up so each file only depends on files you have already read:
 1. `config.py` and `errors.py` : basic configurations and errors which are dependencies of all other modules.
 1. `storage/disk_manager.py` and `page_directory.py`: how pages live in the file and are found again.
