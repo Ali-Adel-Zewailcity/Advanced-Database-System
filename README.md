@@ -56,7 +56,6 @@ Advanced-Database-System/
 │       └── storage/
 │           ├── crypto.py                    encryption hooks
 │           └── object_store.py              encrypted external object storage
-├── M2/                                      standalone M2 B+ Tree visualization prototype
 ├── examples/                                components 2 and 3 (planned)
 │   ├── retail_common/                       shared schema spec, seeded data generator, workloads
 │   ├── retail_on_coredb/                    Retail Orders app built on our database
