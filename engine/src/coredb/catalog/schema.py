@@ -7,7 +7,8 @@ from .types import Column
 
 
 class Schema:
-    def __init__(self, columns: Iterable[Column]):
+    def __init__(self, columns: Iterable[Column], name: str | None = None):
+        self.name = name
         self.columns = tuple(columns)
         if not self.columns:
             raise SchemaError("a table needs at least one column")
@@ -51,7 +52,8 @@ class Schema:
         return cls(Column.from_dict(d) for d in items)
 
     def __eq__(self, other: object) -> bool:
-        return isinstance(other, Schema) and self.columns == other.columns
+        return isinstance(other, Schema) and self.name == other.name and self.columns == other.columns
 
     def __repr__(self) -> str:
-        return f"Schema({', '.join(f'{c.name}:{c.type.value}' for c in self.columns)})"
+        prefix = f"{self.name}, " if self.name else ""
+        return f"Schema({prefix}{', '.join(f'{c.name}:{c.type.value}' for c in self.columns)})"
