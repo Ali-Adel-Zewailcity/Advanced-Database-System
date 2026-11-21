@@ -8,7 +8,7 @@ third-party dependencies.
 
 | # | Component | Purpose | Status |
 |---|---|---|---|
-| 1 | `engine/` (**coredb**) | The database system itself: storage, buffering, layouts, and everything built on them | In progress (storage engine done) |
+| 1 | `engine/` (**coredb**) | M1 storage engine plus M2 indexing, SQL-like querying, and object storage | M1 complete; M2 integrated |
 | 2 | `applications/retail_on_coredb/` | Real-life Retail Orders application built on our own database | Planned |
 | 3 | `applications/retail_on_sqlalchemy/` | The same application built with conventional Python libraries (SQLAlchemy on the SQLite engine) | Planned |
 | 4 | `quality/` | Tests, benchmarks, analysis and reports covering all of the above | In progress |
@@ -51,10 +51,12 @@ Advanced-Database-System/
 │       │   ├── types.py, schema.py          column types and table schemas
 │       │   ├── codec.py                     row encoding for NSM
 │       │   └── store.py                     persistent table catalog
-│       ├── objects/                         object storage (planned)
-│       ├── security/                        encryption hooks (planned)
-│       ├── index/                           B+ Tree, LSM Tree, workload-based index selection (planned)
-│       └── sql/                             SQL-like query parsing and execution (planned)
+│       ├── index/                           B+ Tree, LSM Tree, workload-based index selection
+│       ├── query/                           SQL-like indexed query parsing and execution
+│       └── storage/
+│           ├── crypto.py                    encryption hooks
+│           └── object_store.py              encrypted external object storage
+├── M2/                                      standalone M2 B+ Tree visualization prototype
 ├── examples/                                components 2 and 3 (planned)
 │   ├── retail_common/                       shared schema spec, seeded data generator, workloads
 │   ├── retail_on_coredb/                    Retail Orders app built on our database
@@ -153,7 +155,7 @@ the other; each app's own README will give its run command when the app is added
 
 | If you add... | Put it in | Also update |
 |---|---|---|
-| A new engine capability (object storage, encryption hooks, indexes, SQL-like queries) | its own sub-package in `engine/src/coredb/` (`objects/`, `security/`, `index/`, `sql/`) | tests in `quality/tests/engine/`, a benchmark in `quality/benchmarks/`, `engine/README.md` |
+| A new engine capability (object storage, encryption hooks, indexes, SQL-like queries) | the matching package in `engine/src/coredb/` (`storage/`, `index/`, `query/`) | tests in `quality/tests/engine/`, a benchmark in `quality/benchmarks/`, `engine/README.md` |
 | A graphical front end | `engine/gui/`, using only the engine's public API | its own README |
 | The retail app on our database | `examples/retail_on_coredb/` (may import only `coredb`) | `quality/tests/examples/` |
 | The retail app on SQLAlchemy | `examples/retail_on_sqlalchemy/` (may import only SQLAlchemy) | `quality/tests/examples/` |
@@ -173,4 +175,4 @@ the other; each app's own README will give its run command when the app is added
 1. Put the change in the part of the project listed above.
 2. Add or update its tests, and run `cd quality && python -m pytest --capture=sys`.
 3. If the change affects performance, rerun the relevant benchmark and update the report.
-4. Update the docs the table names for your change.
+4. Update the documentation for your change.

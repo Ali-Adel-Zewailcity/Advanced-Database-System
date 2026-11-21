@@ -6,6 +6,9 @@ A relational database engine written from scratch in pure Python (no dependencie
 * **Buffer pool**: fixed-size hash table, pin counts, dirty tracking, write-on-evict, configurable frame count.
 * **Replacement policies**: LRU, CLOCK (second chance), LRU-K and 2Q, selectable in `Config` or switchable at runtime.
 * **Storage models**: NSM (slotted pages, record id = `(page, slot)`) and DSM (one page chain per column with a column header page).
+* **Advanced indexing**: disk-backed B+ Tree and LSM Tree indexes, workload-based selection, DML maintenance and migration.
+* **Object storage**: external binary objects with pluggable encryption hooks.
+* **Query interface**: SQL-like indexed `SELECT`, range queries, updates and deletes.
 
 
 ## Code documentation
@@ -84,10 +87,14 @@ The public facade. Exports `Database`.
 | `config` | Config | The validated configuration. |
 | `disk` | DiskManager | Page-level file access. |
 | `pool` | BufferPool | The buffer pool all tables read and write through. |
+| `indexes` | IndexManager | Shared M2 index manager using the M1 buffer pool. |
+| `query` | QueryEngine | SQL-like query facade registered with the open tables. |
 
 | Method | Parameters | Returns | Description |
 |---|---|---|---|
 | `create_table` | `name: str`, `schema: Union[Schema, Sequence[Column]]`, `layout: Optional[str] = None` | StorageLayout | Creates a table; `layout` defaults to `config.default_layout`. `CatalogError` if the name exists. |
+| `create_index` | `table_name: str`, `column_name: str`, `**options` | Index | Creates or populates an index using the shared M1 pool. |
+| `execute` | `sql: str`, `force_full_scan: bool = False` | QueryResult | Executes a SQL-like statement against registered tables. |
 | `table` | `name: str` | StorageLayout | Opens an existing table. `CatalogError` if unknown. |
 | `drop_table` | `name: str` | None | Frees all of the table's pages and removes it from the catalog. |
 | `tables` | none | List[str] | Sorted table names. |
