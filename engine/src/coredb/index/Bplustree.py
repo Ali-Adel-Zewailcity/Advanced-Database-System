@@ -313,27 +313,18 @@ class BPlusTreeIndex(Index):
     def search(self, key: Any) -> List[RID]:
         self.stats.point_lookups += 1
         kbytes = encode_key(key)
-        leaf_pid = self._find_leaf_path(kbytes)[-1]
         results: List[RID] = []
-
-        # Because duplicate keys can span adjacent leaf pages, scan forward while key matches
-        curr = leaf_pid
+        curr = self._leftmost_leaf()
         while curr != INVALID_PAGE_ID:
             with self.pool.pin(curr) as f:
                 leaf = _BTreeLeafPage(f.data)
                 entries = leaf.entries()
                 nxt = leaf.next_leaf
-            # Find leftmost position where entry_key >= kbytes
-            keys_only = [e[0] for e in entries]
-            pos = bisect.bisect_left(keys_only, kbytes)
-            for i in range(pos, len(entries)):
-                ek, rid = entries[i]
+            for ek, rid in entries:
                 if ek == kbytes:
                     results.append(rid)
                 elif ek > kbytes:
                     return results
-            if entries and entries[-1][0] > kbytes:
-                break
             curr = nxt
         return results
 
