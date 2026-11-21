@@ -28,7 +28,7 @@ def _make_products_schema() -> Schema:
             Column("id", "INT"),
             Column("category_id", "INT"),
             Column("sku", "VARCHAR"),
-            Column("name", "VARCHAR"),
+            Column("name", "TEXT"),
             Column("unit_price", "FLOAT"),
             Column("image_url", "VARCHAR"),
             Column("is_active", "BOOL"),
