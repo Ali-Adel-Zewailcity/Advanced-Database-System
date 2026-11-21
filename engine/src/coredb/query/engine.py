@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 from ..errors import CatalogError, QueryError
 from ..index.base import RID
-from ..index.manager import IndexManager
+from ..index.index_manager import IndexManager
 
 _OPS: Dict[str, Callable[[Any, Any], bool]] = {
     "=": operator.eq,
